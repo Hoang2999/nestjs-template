@@ -1,3 +1,5 @@
+const { off } = require('process');
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   env: {
@@ -28,7 +30,10 @@ module.exports = {
     'sonarjs',
   ],
   rules: {
-    'prettier/prettier': ['error', { singleQuote: true, trailingComma: 'all', tabWidth: 2 }],
+    'prettier/prettier': [
+      'error',
+      { singleQuote: true, trailingComma: 'all', tabWidth: 2 },
+    ],
     /**
      * plugin:import
      */
@@ -48,9 +53,12 @@ module.exports = {
     'import/no-unused-modules': 'error',
     'import/no-namespace': 'error',
     'import/extensions': ['error', 'never'],
-    'import/no-useless-path-segments': ['error', {
-      noUselessIndex: true,
-    }],
+    'import/no-useless-path-segments': [
+      'error',
+      {
+        noUselessIndex: true,
+      },
+    ],
     'import/no-internal-modules': 'off',
     'import/order': 'off',
     /**
@@ -84,36 +92,34 @@ module.exports = {
     /**
      * plugin:typescript-eslint
      */
-    "no-unused-vars": "off",
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { argsIgnorePattern: '^_' },
-    ],
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/adjacent-overload-signatures': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
     '@typescript-eslint/ban-types': [
       'error',
       {
         types: {
-          'Object': {
+          Object: {
             message: 'Avoid using the `Object` type. Did you mean `object`?',
           },
-          'Function': {
-            message: 'Avoid using the `Function` type. Prefer a specific function type, like `() => void`.',
+          Function: {
+            message:
+              'Avoid using the `Function` type. Prefer a specific function type, like `() => void`.',
           },
-          'Boolean': {
+          Boolean: {
             message: 'Avoid using the `Boolean` type. Did you mean `boolean`?',
             fixWith: 'boolean',
           },
-          'Number': {
+          Number: {
             message: 'Avoid using the `Number` type. Did you mean `number`?',
             fixWith: 'number',
           },
-          'Symbol': {
+          Symbol: {
             message: 'Avoid using the `Symbol` type. Did you mean `symbol`?',
             fixWith: 'symbol',
           },
-          'String': {
+          String: {
             message: 'Avoid using the `String` type. Did you mean `string`?',
             fixWith: 'string',
           },
@@ -121,7 +127,7 @@ module.exports = {
             message: 'Use Record<K, V> instead',
             fixWith: 'Record<K, V>',
           },
-          'object': {
+          object: {
             message: 'Use Record<K, V> instead',
             fixWith: 'Record<K, V>',
           },
@@ -233,6 +239,7 @@ module.exports = {
     '@typescript-eslint/no-duplicate-imports': ['error'],
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-unused-expressions': ['error'],
+
     /**
      * plugin:eslint
      */
@@ -249,14 +256,14 @@ module.exports = {
     ],
     'arrow-body-style': 'error',
     'arrow-parens': ['error', 'always'],
-    'complexity': 'off',
+    complexity: 'off',
     'no-restricted-imports': [
       'error',
       {
         paths: [
           {
             name: 'rxjs/Rx',
-            message: 'Please import directly from \'rxjs\' instead',
+            message: "Please import directly from 'rxjs' instead",
           },
         ],
       },
@@ -267,12 +274,12 @@ module.exports = {
     'no-else-return': 'error',
     'no-implicit-coercion': 'error',
     'constructor-super': 'error',
-    'yoda': 'error',
-    'strict': ['error', 'never'],
-    'curly': 'error',
+    yoda: 'error',
+    strict: ['error', 'never'],
+    curly: 'error',
     'dot-notation': 'error',
     'eol-last': 'error',
-    'eqeqeq': ['error', 'smart'],
+    eqeqeq: ['error', 'smart'],
     'guard-for-in': 'error',
     'id-match': 'error',
     'max-classes-per-file': ['error', 2],
@@ -352,7 +359,7 @@ module.exports = {
     'prefer-const': 'error',
     'prefer-object-spread': 'error',
     'quote-props': ['error', 'consistent-as-needed'],
-    'radix': 'error',
+    radix: 'error',
     'use-isnan': 'error',
     'valid-typeof': 'off',
     'space-before-function-paren': 'off',

@@ -20,14 +20,7 @@ import { AbstractEntity } from '../../common/abstract.entity';
 import { UseDto } from '../../decorators';
 import type { <%= DtoOptionName %> } from './dtos/<%= dtoFileName %>';
 import { <%= DtoName %> } from './dtos/<%= dtoFileName %>';
-import { <%= TranslationEntityName %> } from './<%= translationEntityFileName %>';
 
 @Entity({ name: '<%= TableName %>' })
 @UseDto(<%= DtoName %>)
-export class <%= EntityName %> extends AbstractEntity<<%= DtoName %>, <%= DtoOptionName %>> {
-  @OneToMany(
-    () => <%= TranslationEntityName %>,
-    (<%= translationEntityName %>) => <%= translationEntityName %>.<%= fieldName %>,
-  )
-  translations: <%= TranslationEntityName %>[];
-}
+export class <%= EntityName %> extends AbstractEntity<<%= DtoName %>, <%= DtoOptionName %>> {}

@@ -9,14 +9,14 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiAcceptedResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../constants';
-import { Auth, AuthUser, UUIDParam } from '../../decorators';
+import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
 import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
 import { UserEntity } from '../user/user.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
-import type { PostDto } from './dtos/post.dto';
+import { PostDto } from './dtos/post.dto';
 import { PostPageOptionsDto } from './dtos/post-page-options.dto';
 import { UpdatePostDto } from './dtos/update-post.dto';
 import { PostService } from './post.service';
@@ -43,6 +43,7 @@ export class PostController {
   @Get()
   @Auth([RoleType.USER])
   @UseLanguageInterceptor()
+  @ApiPageOkResponse({ type: PostDto })
   async getPosts(@Query() postsPageOptionsDto: PostPageOptionsDto) {
     return this.postService.getAllPost(postsPageOptionsDto);
   }
@@ -50,6 +51,7 @@ export class PostController {
   @Get(':id')
   @Auth([])
   @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({ type: PostDto })
   async getSinglePost(@UUIDParam('id') id: Uuid): Promise<PostDto> {
     const entity = await this.postService.getSinglePost(id);
 
@@ -58,6 +60,7 @@ export class PostController {
 
   @Put(':id')
   @HttpCode(HttpStatus.ACCEPTED)
+  @ApiAcceptedResponse()
   updatePost(
     @UUIDParam('id') id: Uuid,
     @Body() updatePostDto: UpdatePostDto,
@@ -67,6 +70,7 @@ export class PostController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
+  @ApiAcceptedResponse()
   async deletePost(@UUIDParam('id') id: Uuid): Promise<void> {
     await this.postService.deletePost(id);
   }

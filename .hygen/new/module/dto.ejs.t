@@ -14,8 +14,7 @@ skip_if: <%= !blocks.includes('DTO') %>
 %>import { AbstractDto } from '../../../common/dto/abstract.dto';
 import type { <%= EntityName %> } from '../<%= entityFileName %>';
 
-export interface <%= DtoOptionName %> {
-}
+export interface <%= DtoOptionName %> {}
 
 export class <%= DtoName %> extends AbstractDto {
   constructor(entityName: <%= EntityName %>, options?: <%= DtoOptionName %>) {

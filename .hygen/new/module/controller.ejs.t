@@ -40,12 +40,12 @@ skip_if: <%= !blocks.includes('Controller') %>
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiAcceptedResponse, ApiTags } from '@nestjs/swagger';
 
 import type { PageDto } from '../../common/dto/page.dto';
-import { Auth, UUIDParam } from '../../decorators';
+import { ApiPageOkResponse, Auth, UUIDParam } from '../../decorators';
 import { <%= CreateDtoName %> } from './dtos/<%= createDtoFileName %>';
-import type { <%= DtoName %> } from './dtos/<%= dtoFileName %>';
+import { <%= DtoName %> } from './dtos/<%= dtoFileName %>';
 import { <%= PageOptionsDtoName %> } from './dtos/<%= pageOptionsDtoFileName %>';
 import { <%= UpdateDtoName %> } from './dtos/<%= updateDtoFileName %>';
 import { <%= ServiceName %> } from './<%= serviceFileName %>';
@@ -67,13 +67,16 @@ export class <%= ControllerName %> {
   @Get()
   @Auth([])
   @HttpCode(HttpStatus.OK)
-  <%= getAllFunctionName %>(@Query() <%= pageOptionsDtoName %>: <%= PageOptionsDtoName %>): Promise<PageDto<<%= DtoName %>>> {
+  @ApiPageOkResponse({ type: <%= DtoName %> })
+  <%= getAllFunctionName %>0(
+    @Query() <%= pageOptionsDtoName %>: <%= PageOptionsDtoName %>): Promise<PageDto<<%= DtoName %>>> {
     return this.<%= serviceName %>.<%= getAllFunctionName %>(<%= pageOptionsDtoName %>);
   }
 
   @Get(':id')
   @Auth([])
   @HttpCode(HttpStatus.OK)
+  @ApiPageOkResponse({ type: <%= DtoName %>})
   async <%= getSingleFunctionName %>(@UUIDParam('id') id: Uuid): Promise<<%= DtoName %>> {
     const entity = await this.<%= serviceName %>.<%= getSingleFunctionName %>(id);
 
@@ -82,6 +85,7 @@ export class <%= ControllerName %> {
 
   @Put(':id')
   @HttpCode(HttpStatus.ACCEPTED)
+  @ApiAcceptedResponse()
   <%= updateFunctionName %>(
     @UUIDParam('id') id: Uuid,
     @Body() <%= updateDtoName %>: <%= UpdateDtoName %>,
@@ -91,6 +95,7 @@ export class <%= ControllerName %> {
 
   @Delete(':id')
   @HttpCode(HttpStatus.ACCEPTED)
+  @ApiAcceptedResponse()
   async <%= deleteFunctionName %>(@UUIDParam('id') id: Uuid): Promise<void> {
     await this.<%= serviceName %>.<%= deleteFunctionName %>(id);
   }

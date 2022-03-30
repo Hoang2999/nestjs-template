@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import { ValidatorService } from '../../shared/services/validator.service';
-import { CreatePostCommand } from './commands/create-post.command';
 import { CreatePostDto } from './dtos/create-post.dto';
 import type { PostDto } from './dtos/post.dto';
 import type { PostPageOptionsDto } from './dtos/post-page-options.dto';
@@ -18,22 +16,25 @@ export class PostService {
   constructor(
     private postRepository: PostRepository,
     private validatorService: ValidatorService,
-    private commandBus: CommandBus,
   ) {}
 
   @Transactional()
-  createPost(userId: Uuid, createPostDto: CreatePostDto): Promise<PostEntity> {
-    return this.commandBus.execute<CreatePostCommand, PostEntity>(
-      new CreatePostCommand(userId, createPostDto),
-    );
+  async createPost(
+    userId: Uuid,
+    createPostDto: CreatePostDto,
+  ): Promise<PostEntity> {
+    const postEntity = this.postRepository.create(createPostDto);
+    postEntity.userId = userId;
+
+    await this.postRepository.save(postEntity);
+
+    return postEntity;
   }
 
   async getAllPost(
     postPageOptionsDto: PostPageOptionsDto,
   ): Promise<PageDto<PostDto>> {
-    const queryBuilder = this.postRepository
-      .createQueryBuilder('post')
-      .leftJoinAndSelect('post.translations', 'postTranslation');
+    const queryBuilder = this.postRepository.createQueryBuilder('post');
     const [items, pageMetaDto] = await queryBuilder.paginate(
       postPageOptionsDto,
     );

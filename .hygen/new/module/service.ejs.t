@@ -50,12 +50,10 @@ skip_if: <%= !blocks.includes('Service') %>
  pageOptionsDtoFileName = h.pageOptionsDtoFileName(name);
 
 %>import { Injectable } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { Transactional } from 'typeorm-transactional-cls-hooked';
 
 import type { PageDto } from '../../common/dto/page.dto';
 import { ValidatorService } from '../../shared/services/validator.service';
-import { <%= CreateCommandName %> } from './commands/<%= createCommandFileName %>';
 import type { <%= DtoName %> } from './dtos/<%= dtoFileName %>';
 import type { <%= PageOptionsDtoName %> } from './dtos/<%= pageOptionsDtoFileName %>';
 import { <%= NotFoundExceptionName %> } from './exceptions/<%= notFoundExceptionFileName %>';
@@ -69,14 +67,15 @@ export class <%= ServiceName %> {
   constructor(
     private <%= repositoryName %>: <%= RepositoryName %>,
     private validatorService: ValidatorService,
-    private commandBus: CommandBus,
   ) {}
 
   @Transactional()
-  <%= createFunctionName %>(<%= createDtoName %>: <%= CreateDtoName %>): Promise<<%= EntityName %>> {
-    return this.commandBus.execute<<%= CreateCommandName %>, <%= EntityName %>>(
-      new <%= CreateCommandName %>(<%= createDtoName %>),
-    );
+  async <%= createFunctionName %>(<%= createDtoName %>: <%= CreateDtoName %>): Promise<<%= EntityName %>> {
+    const <%= entityName %> = this.<%= repositoryName %>.create(<%= createDtoName %>);
+
+    await this.<%= repositoryName %>.save(<%= entityName %>);
+
+    return <%= entityName %>;
   }
 
   async <%= getAllFunctionName %>(
@@ -84,7 +83,6 @@ export class <%= ServiceName %> {
   ): Promise<PageDto<<%= DtoName %>>> {
     const queryBuilder = this.<%= repositoryName %>
       .createQueryBuilder('<%= fieldName %>')
-      .leftJoinAndSelect('<%= fieldName %>.translations', '<%= fieldName %>Translation');
     const [items, pageMetaDto] = await queryBuilder.paginate(<%= pageOptionsDtoName %>);
 
     return items.toPageDto(pageMetaDto);

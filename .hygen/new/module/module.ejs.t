@@ -22,23 +22,13 @@ unless_exists: true
 %>import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { <%= CreateHandlerName %> } from './commands/<%= createCommandFileName %>';
 import { <%= ControllerName %> } from './<%= controllerFileName %>';
 import { <%= RepositoryName %> } from './<%= repositoryFileName %>';
-import { <%= TranslationRepositoryName %> } from './<%= translationRepositoryFileName %>';
 import { <%= ServiceName %> } from './<%= serviceFileName %>';
-import { <%= GetHandlerName %> } from './queries/<%= getQueryFileName %>';
-
-export const handlers = [
-<%= CreateHandlerName %>,
-<%= GetHandlerName %>,
-];
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([<%= RepositoryName %>, <%= TranslationRepositoryName %>]),
-  ],
-  providers: [<%= ServiceName %>, ...handlers],
+  imports: [TypeOrmModule.forFeature([<%= RepositoryName %>])],
+  providers: [<%= ServiceName %>],
   controllers: [<%= ControllerName %>],
 })
 export class <%= ModuleName %> {}
