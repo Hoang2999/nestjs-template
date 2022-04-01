@@ -87,7 +87,7 @@ module.exports = {
     /**
      * plugin:simple-import-sort
      */
-    'simple-import-sort/imports': 'error',
+    'simple-import-sort/imports': 'off',
     'simple-import-sort/exports': 'error',
     /**
      * plugin:typescript-eslint

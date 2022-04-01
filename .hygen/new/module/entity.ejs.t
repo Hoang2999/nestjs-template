@@ -8,12 +8,9 @@ skip_if: <%= !blocks.includes('Entity') %>
  DtoName = h.DtoName(name);
  fieldName = h.changeCase.camel(ClassName);
  dtoFileName = h.dtoFileName(name);
- translationEntityFileName = h.translationEntityFileName(name);
  DtoOptionName = h.DtoOptionName(name);
  TableName = h.TableName(name);
  EntityName = h.EntityName(name);
- TranslationEntityName = h.TranslationEntityName(name);
- translationEntityName = h.changeCase.camel(TranslationEntityName);
 %>import { Entity, OneToMany } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity';

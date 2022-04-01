@@ -5,18 +5,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { LanguageCode } from '../constants';
 import type { Constructor } from '../types';
-import type { AbstractDto, AbstractTranslationDto } from './dto/abstract.dto';
+import type { AbstractDto } from './dto/abstract.dto';
 
-/**
- * Abstract Entity
- * @author Narek Hakobyan <narek.hakobyan.07@gmail.com>
- *
- * @description This class is an abstract class for all entities.
- * It's experimental and recommended using it only in microservice architecture,
- * otherwise just delete and use your own entity.
- */
 export interface IAbstractEntity<DTO extends AbstractDto, O = never> {
   id: Uuid;
   createdAt: Date;
@@ -43,8 +34,6 @@ export abstract class AbstractEntity<
   })
   updatedAt: Date;
 
-  translations?: AbstractTranslationEntity[];
-
   private dtoClass: Constructor<DTO, [AbstractEntity, O?]>;
 
   toDto(options?: O): DTO {
@@ -58,12 +47,4 @@ export abstract class AbstractEntity<
 
     return new this.dtoClass(this, options);
   }
-}
-
-export class AbstractTranslationEntity<
-  DTO extends AbstractTranslationDto = AbstractTranslationDto,
-  O = never,
-> extends AbstractEntity<DTO, O> {
-  @Column({ type: 'enum', enum: LanguageCode })
-  languageCode: LanguageCode;
 }

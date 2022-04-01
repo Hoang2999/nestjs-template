@@ -13,7 +13,6 @@ import { ApiAcceptedResponse, ApiTags } from '@nestjs/swagger';
 
 import { RoleType } from '../../constants';
 import { ApiPageOkResponse, Auth, AuthUser, UUIDParam } from '../../decorators';
-import { UseLanguageInterceptor } from '../../interceptors/language-interceptor.service';
 import { UserEntity } from '../user/user.entity';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PostDto } from './dtos/post.dto';
@@ -42,7 +41,6 @@ export class PostController {
 
   @Get()
   @Auth([RoleType.USER])
-  @UseLanguageInterceptor()
   @ApiPageOkResponse({ type: PostDto })
   async getPosts(@Query() postsPageOptionsDto: PostPageOptionsDto) {
     return this.postService.getAllPost(postsPageOptionsDto);

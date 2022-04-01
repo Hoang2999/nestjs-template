@@ -44,7 +44,6 @@ export class HttpExceptionFilter
       for (const [constraintKey, constraint] of Object.entries(constraints)) {
         // convert default messages
         if (!constraint) {
-          // convert error message to error.fields.{key} syntax for i18n translation
           constraints[constraintKey] = `error.fields.${_.snakeCase(
             constraintKey,
           )}`;

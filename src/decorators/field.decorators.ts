@@ -27,7 +27,6 @@ import {
 } from 'class-validator';
 import _ from 'lodash';
 
-import { supportedLanguageCount } from '../constants';
 import { ApiEnumProperty, ApiUUIDProperty } from './property.decorators';
 import {
   PhoneNumberSerializer,
@@ -192,35 +191,35 @@ export function BooleanFieldOptional(
   );
 }
 
-export function TranslationsField(
-  options: RequireField<Omit<ApiPropertyOptions, 'isArray'>, 'type'> &
-    Partial<{ swagger: boolean }>,
-): PropertyDecorator {
-  const decorators = [
-    ArrayMinSize(supportedLanguageCount),
-    ArrayMaxSize(supportedLanguageCount),
-    ValidateNested({
-      each: true,
-    }),
-    Type(() => options.type as FunctionConstructor),
-  ];
+// export function TranslationsField(
+//   options: RequireField<Omit<ApiPropertyOptions, 'isArray'>, 'type'> &
+//     Partial<{ swagger: boolean }>,
+// ): PropertyDecorator {
+//   const decorators = [
+//     ArrayMinSize(supportedLanguageCount),
+//     ArrayMaxSize(supportedLanguageCount),
+//     ValidateNested({
+//       each: true,
+//     }),
+//     Type(() => options.type as FunctionConstructor),
+//   ];
 
-  if (options?.swagger !== false) {
-    decorators.push(ApiProperty({ isArray: true, ...options }));
-  }
+//   if (options?.swagger !== false) {
+//     decorators.push(ApiProperty({ isArray: true, ...options }));
+//   }
 
-  return applyDecorators(...decorators);
-}
+//   return applyDecorators(...decorators);
+// }
 
-export function TranslationsFieldOptional(
-  options: RequireField<Omit<ApiPropertyOptions, 'isArray'>, 'type'> &
-    Partial<{ swagger: boolean }>,
-): PropertyDecorator {
-  return applyDecorators(
-    IsOptional(),
-    TranslationsField({ required: false, ...options }),
-  );
-}
+// export function TranslationsFieldOptional(
+//   options: RequireField<Omit<ApiPropertyOptions, 'isArray'>, 'type'> &
+//     Partial<{ swagger: boolean }>,
+// ): PropertyDecorator {
+//   return applyDecorators(
+//     IsOptional(),
+//     TranslationsField({ required: false, ...options }),
+//   );
+// }
 
 export function TmpKeyField(
   options: Omit<ApiPropertyOptions, 'type'> &
